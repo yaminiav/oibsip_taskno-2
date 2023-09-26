@@ -1,0 +1,88 @@
+import java.sql.*;
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class OnlineExamSystem {
+    private static Connection connection;
+    private static String currentUser;
+
+    public static void main(String[] args) {
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/exam_db", "username", "password");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+        do {
+            System.out.println("Online Examination System");
+            System.out.println("1. Login");
+            System.out.println("2. Update Profile and Password");
+            System.out.println("3. Start Exam");
+            System.out.println("4. Logout");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline
+
+            switch (choice) {
+                case 1:
+                    login(scanner);
+                    break;
+                case 2:
+                    if (currentUser != null) {
+                        updateProfileAndPassword(scanner);
+                    } else {
+                        System.out.println("Please login first.");
+                    }
+                    break;
+                case 3:
+                    if (currentUser != null) {
+                        startExam(scanner);
+                    } else {
+                        System.out.println("Please login first.");
+                    }
+                    break;
+                case 4:
+                    logout();
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        } while (choice != 5);
+
+        scanner.close();
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void login(Scanner scanner) {
+        // Implement user login logic here
+        // Set the 'currentUser' variable if login is successful
+    }
+
+    private static void updateProfileAndPassword(Scanner scanner) {
+        // Implement profile and password update logic here
+    }
+
+    private static void startExam(Scanner scanner) {
+        // Implement exam logic here
+        // This should include fetching questions, timer, and submission
+    }
+
+    private static void logout() {
+        currentUser = null;
+        System.out.println("Logged out successfully.");
+    }
+}
